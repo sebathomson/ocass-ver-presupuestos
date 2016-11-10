@@ -1,0 +1,7 @@
+services:
+  monitor.conexion_webservice:
+    class: AppBundle\Services\ConexionWebService
+    arguments: ['@logger', %urlWebService%, %colorDefault%]
+  monitor.utils:
+    class: AppBundle\Services\UtilsService
+    arguments: ['@service_container']

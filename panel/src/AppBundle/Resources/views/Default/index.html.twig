@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {{ include('AppBundle:Default:_head.html.twig') }}
+</head>
+<body>
+    <div style="position: fixed;margin-top: -66px;background-color: #fff;width: 100%;z-index: 100;">
+        <img id="img-flecha-dia-actual" src="{{ asset('bundles/app/images/flecha.png') }}" width="30px">
+        <div id="div-linea-dia-actual" style="border-left: solid 1px green;"></div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th id="th-costado-izquierdo" class="sin-borde-inferior"></th>
+                    <th id="th-cursos-no-terminados">Cursos vigentes aún no terminados</th>
+                    {% for mes in meses if mes.esPasado == false %}
+                        <th id="mes-{{ mes.anio }}{{ mes.mes }}" class="th-mes">{{ mes.nombre | upper }} {{ mes.anio }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for sucursal in sucursales %}
+                    {% set primer_row = loop.first %}
+                    <tr>
+                        <td {% if loop.first %}class="td-logo"{% endif %}>
+                            {% if loop.first %}
+                                <img id="img-logo" src="{{ asset('bundles/app/images/logo.png') }}" alt="Logo" width="25px">
+                            {% endif %}
+                        </td>
+                        <td {% if loop.first %}class="td-nombre-empresa"{% endif %}>
+                            <strong>EMPRESA:</strong> {{ sucursal.nombreEmpresa }} / <strong>SEDE</strong>: {{ sucursal.nombreSucursal }}
+                        </td>
+                        {% for mes in meses if mes.esPasado == false %}
+                            <td id="mes-{{ mes.anio }}{{ mes.mes }}-base">
+                                {% if loop.first %}
+                                    <span id="span-dia-actual">{{ diaActual }}</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <strong>CURSOS</strong><br><strong>CLASE</strong>
+                        </td>
+                        <td class="huincha-verde-arriba"></td>
+                        {% for mes in meses if mes.esPasado == false %}
+                            <td class="huincha-verde-arriba"></td>
+                        {% endfor %}
+                    </tr>
+                    {% for key, tipos in sucursal.tiposCurso %}
+                        {% set isLast = loop.last %}
+                        <tr>
+                            <td class="text-center">
+                                <strong>{{ key | replace({'_': ' '}) }}</strong>
+                            </td>
+                            <td class="calle">
+                            {% for mesanio, mes in meses if mes.esPasado == true %}
+                                {% for curso in cursos 
+                                    if curso.inicio_mes_anio == mesanio and 
+                                    curso.Tipo_Curso == key and 
+                                    curso.Cod_sucursal == sucursal.idSucursal and 
+                                    curso.Cod_empresa == sucursal.idEmpresa %}
+                                    <div class="img-vehiculo" data-code="{{ curso.Cod_ot }}-{{ curso.Cod_sucursal }}-{{ curso.Cod_empresa }}">
+                                        <img src="{{ asset('bundles/app/images/' ~ curso.imagen_curso) }}" alt="Curso {{ curso.Cod_ot }}" style="background-color: #{{ curso.color_vehiculo }}" class="data-curso {# img-vehiculo-{{ key }} #}">
+                                        <span class="numeroCurso-{{ key }}">{{ curso.Cod_ot }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            </td>
+                            {% for mesanio, mes in meses if mes.esPasado == false %}
+                                <td class="calle calle-meses ultimo-mes">
+                                    {% for curso in cursos 
+                                    if curso.inicio_mes_anio == mesanio and 
+                                    curso.Tipo_Curso == key and 
+                                    curso.Cod_sucursal == sucursal.idSucursal and 
+                                    curso.Cod_empresa == sucursal.idEmpresa %}
+                                    <div class="img-vehiculo" data-code="{{ curso.Cod_ot }}-{{ curso.Cod_sucursal }}-{{ curso.Cod_empresa }}" data-numerodia="{{ curso.o_Fecha_Inicio | date('d') }}" data-cantidaddiasmes="{{ curso.o_Fecha_Inicio | date('t') }}">
+                                        <img src="{{ asset('bundles/app/images/' ~ curso.imagen_curso) }}" alt="Curso {{ curso.Cod_ot }}" style="background-color: #{{ curso.color_vehiculo }}" class="data-curso {# img-vehiculo-{{ key }} #}">
+                                        <span class="numeroCurso-{{ key }}">{{ curso.Cod_ot }}</span>
+                                    </div>
+                                {% endfor %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="sin-borde-inferior"></td>
+                        <td class="huincha-verde-abajo"></td>
+                        {% for mes in meses if mes.esPasado == false %}
+                            <td class="huincha-verde-abajo"></td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        {{ include('AppBundle:Default:_script.html.twig') }}
+    </script>
+</body>
+</html>

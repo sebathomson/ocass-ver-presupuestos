@@ -1,0 +1,44 @@
+<table id="table-encabezado-empresa" class="table table-condensed table-hover">
+	<tbody>
+		<tr>
+			<th>Código Empresa</th>
+			<td>{{ datosEmpresa.codigoEmpresa }}</td>
+		</tr>
+		<tr>
+			<th>Nombre Empresa</th>
+			<td>{{ datosEmpresa.nombreEmpresa }}</td>
+		</tr>
+		<tr>
+			<th>Código Producto</th>
+			<td>{{ datosEmpresa.codigoProducto }}</td>
+		</tr>
+		<tr>
+			<th>Nombre Producto</th>
+			<td>{{ datosEmpresa.nombreProducto }}</td>
+		</tr>
+		<tr>
+			<th>N° OTE</th>
+			<td>{{ ot }}</td>
+		</tr>
+		<tr>
+			<th>Fecha Inicio</th>
+			<td>{{ datosEmpresa.fechaInicio | date('d-m-Y') }}</td>
+		</tr>
+		<tr>
+			<th>Fecha Término</th>
+			<td>{{ datosEmpresa.fechaTermino | date('d-m-Y') }}</td>
+		</tr>
+		<tr>
+			<th>Fecha Actual</th>
+			<td>{{ 'now' | date('d-m-Y') }}</td>
+		</tr>
+		<tr>
+			<th>N° Alumnos</th>
+			<td>{{ datosEmpresa.cantidadAlumnos }}</td>
+		</tr>
+		<tr>
+			<th>Estado</th>
+			<td>{{ datosEmpresa.estado }}</td>
+		</tr>
+	</tbody>
+</table> 

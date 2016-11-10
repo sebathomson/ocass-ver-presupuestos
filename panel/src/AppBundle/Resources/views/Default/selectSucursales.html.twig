@@ -1,0 +1,39 @@
+<form id="form-select-sucursales" action="{{ path('pasarela') }}" method="POST">
+	<div class="form-group">
+		<label for="idEmpresa">Empresa</label>
+		<select id="idEmpresa" name="idEmpresa" class="form-control">
+			<option value="todas">Todas</option>
+			{% for empresa in empresas %}
+				<option value="{{ empresa.idEmpresa }}" {% if empresa.idEmpresa == idEmpresa %}selected="selected"{% endif %}>{{ empresa.nombreEmpresa }}</option>				
+			{% endfor %}
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="idSucursal">Sede</label>
+		<select id="idSucursal" name="idSucursal" class="form-control">
+			<option value="todas">Todas</option>
+			{% for sucursal in sucursales %}
+				<option value="{{ sucursal.idSucursal }}" {% if sucursal.idSucursal == idSucursal %}selected="selected"{% endif %} class="sucursal-empresa sucursal-empresa-{{ sucursal.idEmpresa }}">{{ sucursal.nombreSucursal }}</option>				
+			{% endfor %}
+		</select>
+	</div>
+	<input type="hidden" name="usuario" value="{{ usuario }}">
+</form>
+<script>
+	$('.sucursal-empresa').hide();
+	
+	{% if 'todas' != idEmpresa %}
+		$('.sucursal-empresa-{{ idEmpresa }}').show();
+	{% endif %}
+
+	$('#idEmpresa').on('change', function() {
+		console.log('select-id-empresa: change');
+
+		$('.sucursal-empresa').hide();
+
+		idEmpresa = $(this).val();
+		$('.sucursal-empresa-'+idEmpresa).show();
+
+		$('#idSucursal').val('todas');
+	});
+</script>

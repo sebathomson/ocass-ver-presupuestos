@@ -1,0 +1,158 @@
+<table id="table-presupuesto" class="table table-condensed">
+	<thead><tr><td colspan="14"></td><td colspan="3" class="td-bordered">Valor x Curso</td></tr></thead>
+	<tbody>
+		<tr class="tr-super-title">
+			<td class="td-rotate-45"><div><span>Código Empresa</span></div></td>
+			<td class="td-rotate-45"><div><span>Naturaleza Gasto</span></div></td>
+			<td class="td-rotate-45"><div><span>Tipo Activador</span></div></td>
+			<td class="td-rotate-45"><div><span>Centro Costos</span></div></td>
+			<td class="td-rotate-45"><div><span>N° Trabajo</span></div></td>
+			<td class="td-rotate-45"><div><span>Tipo Partida</span></div></td>
+			<td class="td-rotate-45"><div><span>Item</span></div></td>
+			<td class="td-descripcion">Descripción</td>
+			<td class="td-bordered td-bordered-no-right">C1</td>
+			<td class="td-bordered td-bordered-no-right">T1</td>
+			<td class="td-bordered td-bordered-no-right">C2</td>
+			<td class="td-bordered td-bordered-no-right">T2</td>
+			<td class="td-bordered">Unidad</td>
+			<td></td>
+			<td class="td-bordered td-bordered-no-right">PU ($)</td>
+			<td class="td-bordered td-bordered-no-right">Cant (N°)</td>
+			<td class="td-bordered">Valor ($)</td>
+			<td></td>
+			<td class="td-bordered td-bordered-no-right">Gastado ($)</td>
+			<td class="td-bordered td-bordered-no-right">Disponible ($)</td>
+		</tr>
+		<tr>
+			<td></td>
+		</tr>
+		{# start: INGRESOS #}
+		<tr>
+			<td colspan="7"></td>
+			<td class="tr-titulo">INGRESOS</td>
+		</tr>
+		{% set totalCantidad = 0 %}
+		{% set totalValor = 0 %}
+		{% for item in detallePresupuesto.ingresos %}
+			{% set pu            = (item.C1 * item.T1) + (item.C2 * item.T2) %}
+			{% set valor         = pu * item.Cantidad %}
+			{% set totalCantidad = totalCantidad + item.Cantidad %}
+			{% set totalValor    = totalValor + valor %}
+			<tr>
+				<td>{{ item.Cod_empresa }}</td>{# Código Empresa #}
+				<td>{{ item.Naturaleza }}</td>{# Naturaleza Gasto #}
+				<td>{{ item.Tipo_actividad }}</td>{# Tipo Activador #}
+				<td>{{ item.Centro_costo }}</td>{# Centro Costos #}
+				<td>{{ item.N_trabajo }}</td>{# N° Trabajo #}
+				<td>{{ item.Tipo_partida }}</td>{# Tipo Partida #}
+				<td>{{ item.item }}</td>{# Item #}
+				<td>{{ item.Descripcion }}</td>{# Descripción #}
+				<td>{{ item.C1 }}</td>{# C1 #}
+				<td>${{ item.T1 | number_format(0, '.', '.') }}</td>{# T1 #}
+				<td>{{ item.C2 }}</td>{# C2 #}
+				<td>{{ item.T2 }}</td>{# T2 #}
+				<td>{{ item.Unidad }}</td>{# Unidad #}
+				<td></td>{#  #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">${{ pu | number_format(0, '.', '.') }}</td>{# PU ($) #}
+				<td class="td-bordered td-bordered-no-right td-bordered-no-bottom">{{ item.Cantidad }}</td>{# Cant (N°) #}
+				<td class="td-bordered td-bordered-no-bottom">${{ valor | number_format(0, '.', '.') }}</td>{# Valor ($) #}
+			</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="7"></td>
+			<td><strong>TOTAL INGRESOS</strong></td>
+			<td colspan="7"></td>
+			<td class="td-bordered td-bordered-no-right tr-titulo">{{ totalCantidad }}</td>{# TOTAL COLUMNA Cant (N°) #}
+			<td class="td-bordered tr-titulo">${{ totalValor | number_format(0, '.', '.') }}</td>{# TOTAL COLUMNA Valor ($) #}
+		</tr>
+		{# end: INGRESOS #}
+		{# start: COSTOS FIJOS #}
+		<tr>
+			<td colspan="7"></td>
+			<td class="tr-titulo">COSTOS FIJOS</td>
+		</tr>
+		{% set totalValor   = 0 %}
+		{% set totalGastado = 0 %}
+		{% for item in detallePresupuesto.costosFijos %}
+			{% set pu           = (item.C1 * item.T1) + (item.C2 * item.T2) %}
+			{% set valor        = pu * item.Cantidad %}
+			{% set totalValor   = totalValor + valor %}
+			{% set totalGastado = totalGastado + item.Gastado %}
+			<tr>
+				<td>{{ item.Cod_empresa }}</td>{# Código Empresa #}
+				<td>{{ item.Naturaleza }}</td>{# Naturaleza Gasto #}
+				<td>{{ item.Tipo_actividad }}</td>{# Tipo Activador #}
+				<td>{{ item.Centro_costo }}</td>{# Centro Costos #}
+				<td>{{ item.N_trabajo }}</td>{# N° Trabajo #}
+				<td>{{ item.Tipo_partida }}</td>{# Tipo Partida #}
+				<td>{{ item.item }}</td>{# Item #}
+				<td>{{ item.Descripcion }}</td>{# Descripción #}
+				<td>{{ item.C1 }}</td>{# C1 #}
+				<td>${{ item.T1 | number_format(0, '.', '.') }}</td>{# T1 #}
+				<td>{{ item.C2 }}</td>{# C2 #}
+				<td>{{ item.T2 }}</td>{# T2 #}
+				<td>{{ item.Unidad }}</td>{# Unidad #}
+				<td></td>{#  #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">${{ pu | number_format(0, '.', '.') }}</td>{# PU ($) #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">{{ item.Cantidad }}</td>{# Cant (N°) #}
+				<td class="td-bordered td-bordered-no-bottom">${{ valor | number_format(0, '.', '.') }}</td>{# Valor ($) #}
+				<td></td>{#  #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">${{ item.Gastado | number_format(0, '.', '.') }}</td>{# Gastado ($) #}
+				<td class="td-bordered td-bordered-no-right td-bordered-no-bottom">${{ (valor - item.Gastado) | number_format(0, '.', '.') }}</td>{# Disponible ($) #}
+			</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="7"></td>
+			<td><strong>TOTAL COSTOS FIJOS</strong></td>
+			<td colspan="8"></td>
+			<td class="td-bordered tr-titulo">${{ totalValor | number_format(0, '.', '.') }}</td>{# TOTAL COLUMNA Valor ($) #}
+			<td colspan="2"></td>
+			<td class="td-bordered td-bordered-no-right tr-titulo">${{ (totalValor - totalGastado) | number_format(0, '.', '.') }}</td>{# TOTAL COLUMNA Valor ($) #}
+		</tr>
+		{# end: COSTOS FIJOS #}
+		{# start: COSTOS VARIABLES #}
+		<tr>
+			<td colspan="7"></td>
+			<td class="tr-titulo">COSTOS VARIABLES</td>
+		</tr>
+		{% set totalValor   = 0 %}
+		{% set totalGastado = 0 %}
+		{% for item in detallePresupuesto.costosVariables %}
+			{% set pu           = (item.C1 * item.T1) + (item.C2 * item.T2) %}
+			{% set valor        = pu * item.Cantidad %}
+			{% set totalValor   = totalValor + valor %}
+			{% set totalGastado = totalGastado + item.Gastado %}
+			<tr>
+				<td>{{ item.Cod_empresa }}</td>{# Código Empresa #}
+				<td>{{ item.Naturaleza }}</td>{# Naturaleza Gasto #}
+				<td>{{ item.Tipo_actividad }}</td>{# Tipo Activador #}
+				<td>{{ item.Centro_costo }}</td>{# Centro Costos #}
+				<td>{{ item.N_trabajo }}</td>{# N° Trabajo #}
+				<td>{{ item.Tipo_partida }}</td>{# Tipo Partida #}
+				<td>{{ item.item }}</td>{# Item #}
+				<td>{{ item.Descripcion }}</td>{# Descripción #}
+				<td>{{ item.C1 }}</td>{# C1 #}
+				<td>${{ item.T1 | number_format(0, '.', '.') }}</td>{# T1 #}
+				<td>{{ item.C2 }}</td>{# C2 #}
+				<td>{{ item.T2 }}</td>{# T2 #}
+				<td>{{ item.Unidad }}</td>{# Unidad #}
+				<td></td>{#  #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">${{ pu | number_format(0, '.', '.') }}</td>{# PU ($) #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">{{ item.Cantidad }}</td>{# Cant (N°) #}
+				<td class="td-bordered td-bordered-no-bottom">${{ valor | number_format(0, '.', '.') }}</td>{# Valor ($) #}
+				<td></td>{#  #}
+				<td class="td-bordered td-bordered-no-right{% if loop.last == false %} td-bordered-no-bottom{% endif %}">${{ item.Gastado | number_format(0, '.', '.') }}</td>{# Gastado ($) #}
+				<td class="td-bordered td-bordered-no-right td-bordered-no-bottom">${{ (valor - item.Gastado) | number_format(0, '.', '.') }}</td>{# Disponible ($) #}
+			</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="7"></td>
+			<td><strong>TOTAL COSTOS VARIABLES</strong></td>
+			<td colspan="8"></td>
+			<td class="td-bordered tr-titulo">${{ totalValor | number_format(0, '.', '.') }}</td>{# TOTAL COLUMNA Valor ($) #}
+			<td colspan="2"></td>
+			<td class="td-bordered td-bordered-no-right tr-titulo">${{ (totalValor - totalGastado) | number_format(0, '.', '.') }}</td>{# TOTAL COLUMNA Valor ($) #}
+		</tr>
+		{# end: COSTOS VARIABLES #}
+	</tbody>
+</table>

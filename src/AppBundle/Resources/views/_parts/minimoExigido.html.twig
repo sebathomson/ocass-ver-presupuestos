@@ -1,0 +1,24 @@
+<table class="table table-condensed table-hover">
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<th>Mínimo Exigido</th>
+	</tr>
+	<tr>
+		<th class="text-right">Margen</th>
+		<td>= ${{ detallePresupuesto.margen | number_format(0, '.', '.') }}</td>
+		<td>>=</td>
+		<td>${{ minimoExigido.margen | number_format(0, '.', '.') }}</td>
+	</tr>
+	<tr>
+		<th class="text-right">Margen / Costo</th>
+		{% if detallePresupuesto.totalGastos == 0 %}
+			<td>= {{ (detallePresupuesto.totalGastos) | number_format(2, ',', '.') }}%</td>
+			{% else %}
+			<td>= {{ (detallePresupuesto.margen * 100 / detallePresupuesto.totalGastos) | number_format(2, ',', '.') }}%</td>
+		{% endif %}
+		<td>>=</td>
+		<td>{{ (minimoExigido.margenCostos) | number_format(2, ',', '.') }}%</td>
+	</tr>
+</table>

@@ -1,0 +1,196 @@
+<style>
+    .table-reporte-comparativo thead {
+        position: relative;
+        margin: 0px;
+        z-index: 0;
+    }
+</style>
+<hr>
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <td style="border-bottom: 0px solid #fff!important;">
+                <strong>Reporte Global (Análisis del periodo actual)</strong>
+            </td>
+            <td style="border-bottom: 0px solid #fff!important;">
+                <strong>Reporte Global (Análisis del periodo anterior)</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-top: 0px solid #fff!important;border-bottom: 0px solid #fff!important;">
+                <strong>Facturación = </strong>{{ facturacion.actual | number_format(0, '.', '.') }}
+            </td>
+            <td style="border-top: 0px solid #fff!important;border-bottom: 0px solid #fff!important;">
+                <strong>Facturación = </strong>{{ facturacion.anterior | number_format(0, '.', '.') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border-top: 0px solid #fff!important;">
+                <strong>Pagado = </strong>{{ pagado.actual | number_format(0, '.', '.') }}
+            </td>
+            <td style="border-top: 0px solid #fff!important;">
+                <strong>Pagado = </strong>{{ pagado.anterior | number_format(0, '.', '.') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: #ffd400; color: #000">
+                <strong>Promedio Ingreso por Curso</strong>
+            </td>
+            <td style="background-color: #ffd400; color: #000">
+                <strong>Promedio Ingreso por Curso</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0px;">
+                <table class="table table-condensed table-reporte-comparativo">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Alumnos</th>
+                            <th>Precio</th>
+                            <th>% Utilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, tipoCurso in arrTiposCurso %}
+                            <tr>
+                                <td>{{ key | replace({'_': ' '}) }}</td>
+                                <td>{{ alumnosPorCurso[ 'actual' ][ key ][ 'suma_alumnos' ] }}</td>
+                                <td>
+                                    {% if alumnosPorCurso[ 'actual' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ (alumnosPorCurso[ 'actual' ][ key ][ 'monto_facturado' ] / alumnosPorCurso[ 'actual' ][ key ][ 'suma_alumnos' ]) | number_format(0, '.', '.') }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if alumnosPorCurso[ 'actual' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ ((alumnosPorCurso[ 'actual' ][ key ][ 'utilidad_real' ] * 100) / (alumnosPorCurso[ 'actual' ][ key ][ 'suma_alumnos' ])) | number_format(0, '.', '.') }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+            <td style="padding: 0px;">
+                <table class="table table-condensed table-reporte-comparativo">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Alumnos</th>
+                            <th>Precio</th>
+                            <th>% Utilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, tipoCurso in arrTiposCurso %}
+                            <tr>
+                                <td>{{ key | replace({'_': ' '}) }}</td>
+                                <td>{{ alumnosPorCurso[ 'anterior' ][ key ][ 'suma_alumnos' ] }}</td>
+                                <td>
+                                    {% if alumnosPorCurso[ 'anterior' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ (alumnosPorCurso[ 'anterior' ][ key ][ 'monto_facturado' ] / alumnosPorCurso[ 'anterior' ][ key ][ 'suma_alumnos' ]) | number_format(0, '.', '.') }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if alumnosPorCurso[ 'anterior' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ ((alumnosPorCurso[ 'anterior' ][ key ][ 'utilidad_real' ] * 100) / (alumnosPorCurso[ 'anterior' ][ key ][ 'suma_alumnos' ])) | number_format(0, '.', '.') }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: #ffd400; color: #000">
+                <strong>Promedio Ingreso por Relator</strong>
+            </td>
+            <td style="background-color: #ffd400; color: #000">
+                <strong>Promedio Ingreso por Relator</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0px;">
+                <table class="table table-condensed table-reporte-comparativo">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Alumnos</th>
+                            <th>Precio</th>
+                            <th>% Utilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, relator in arrRelatores %}
+                            <tr>
+                                <td>{{ key | replace({'_': ' '}) }}</td>
+                                <td>{{ alumnosPorRelator[ 'actual' ][ key ][ 'suma_alumnos' ] }}</td>
+                                <td>
+                                    {% if alumnosPorRelator[ 'actual' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ (alumnosPorRelator[ 'actual' ][ key ][ 'monto_facturado' ] / alumnosPorRelator[ 'actual' ][ key ][ 'suma_alumnos' ]) | number_format(0, '.', '.') }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if alumnosPorRelator[ 'actual' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ ((alumnosPorRelator[ 'actual' ][ key ][ 'utilidad_real' ] * 100) / (alumnosPorRelator[ 'actual' ][ key ][ 'suma_alumnos' ])) | number_format(0, '.', '.') }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+            <td style="padding: 0px;">
+                <table class="table table-condensed table-reporte-comparativo">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Alumnos</th>
+                            <th>Precio</th>
+                            <th>% Utilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, relator in arrRelatores %}
+                            <tr>
+                                <td>{{ key | replace({'_': ' '}) }}</td>
+                                <td>{{ alumnosPorRelator[ 'anterior' ][ key ][ 'suma_alumnos' ] }}</td>
+                                <td>
+                                    {% if alumnosPorRelator[ 'anterior' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ (alumnosPorRelator[ 'anterior' ][ key ][ 'monto_facturado' ] / alumnosPorRelator[ 'anterior' ][ key ][ 'suma_alumnos' ]) | number_format(0, '.', '.') }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if alumnosPorRelator[ 'anterior' ][ key ][ 'suma_alumnos' ] != 0 %}
+                                        {{ ((alumnosPorRelator[ 'anterior' ][ key ][ 'utilidad_real' ] * 100) / (alumnosPorRelator[ 'anterior' ][ key ][ 'suma_alumnos' ])) | number_format(0, '.', '.') }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Total de Comisiones = </strong>{{ comision.actual }}</td>
+            <td><strong>Total de Comisiones = </strong>{{ comision.anterior }}</td>
+        </tr>
+    </tbody>
+</table>
